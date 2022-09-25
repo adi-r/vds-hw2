@@ -1,7 +1,7 @@
 let width = window.screen.availWidth
 let height = window.screen.availHeight / 1.2
 
-let tooltip = d3.select('body')
+let tooltip = d3.select('#map_canvas')
                 .append('div')
                 .attr('class', 'tooltip')
 
@@ -18,6 +18,7 @@ var tooltip_offset = { x: 5,
 
 //Create a tooltip, hidden at the start
 function show_tool(d) {
+  console.log('current_state', current_state)
   if (d.state_name === current_state) {
     current_state_selection.attr('fill-opacity', 0.4)
   }
@@ -27,14 +28,14 @@ function show_tool(d) {
   tooltip.style('position' , 'absolute')
           .style('display', 'block')
           .style('padding' , "20px")
-          .style('background-color', 'rgba(255,255,255,0.4)')
+          .style('background-color', 'rgba(255,255,255,0.6)')
           .style('color' , 'black')
           .style('text-align' , "left" )
-          .style('top',  (parseInt(d3.select(this).attr("cy")) + parseInt(tooltip_offset.y))  + 'px')
-          .style('left', (parseInt(d3.select(this).attr("cx")) + parseInt(tooltip_offset.x))  + 'px')
+          .style('top',  (d3.select(this).attr("cy") + tooltip_offset.y) + 'px')
+          .style('left', (d3.select(this).attr("cx") + tooltip_offset.x)  + 'px')
           .html('City:' + d.city + ' <br/>  Males: ' + d.males + ' <br/> Females: ' + d.females + 
-                '<br/> Children:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + (parseInt(d.males) + parseInt(d.females) - parseInt(d.kids) - parseInt(d.teens)),
-    )    
+                '<br/> Children:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + ((d.males + d.females) - d.kids - d.teens),
+                )    
 }
       
 function hide_tool(d) {
@@ -58,10 +59,10 @@ let projection = d3.geoAlbersUsa()
 let state_map = function () {
   let path = d3.geoPath()
                 .projection(projection)
-  statesData = './data/state_freq.csv'
+  state_freq = './data/state_freq.csv'
   d3.selectAll('svg').remove()
 
-  let svg = d3.select('body')
+  let svg = d3.select('#map_canvas')
               .append('svg')
               .attr('width', width)
               .attr('height', height)
@@ -71,9 +72,9 @@ let state_map = function () {
   var age = age_group.options[age_group.selectedIndex].value; 
   var gender = gender_type.options[gender_type.selectedIndex].value;
 
-  d3.csv(statesData, function (data) {
-    let dataArray = []
-    let maxVal = 0
+  d3.csv(state_freq, function (data) {
+    let arr = []
+    let max = 0
     for (var d = 0; d < data.length; d++) {
       if (
         (age == -1 ||
@@ -81,60 +82,57 @@ let state_map = function () {
           age == data[d].ageGroup) &&
         (gender == -1 || gender == data[d].gender)
       ) {
-        dataArray.push(data[d])
+        arr.push(data[d])
       }
     }
 
-    var groupedData = dataArray.reduce((acc, it) => {
+    var groupby_gender = arr.reduce((acc, it) => {
       acc[it.state] = acc[it.state] + +it.count || +it.count
       return acc
     }, {})
 
-    var groupedDataMale = dataArray
-      .filter((x) => x.gender == 'M')
-      .reduce((acc, it) => {
-        acc[it.state] = acc[it.state] + +it.count || +it.count
-        return acc
-      }, {})
+    var groupby_male = arr.filter((x) => x.gender == 'M')
+                          .reduce((acc, it) => {
+                            acc[it.state] = acc[it.state] + +it.count || +it.count
+                            return acc
+                          }, {})
 
-    var groupedDataFemale = dataArray
-      .filter((x) => x.gender == 'F')
-      .reduce((acc, it) => {
-        acc[it.state] = acc[it.state] + +it.count || +it.count
-        return acc
-      }, {})
-    var groupedDataAgeGroup1 = dataArray
-      .filter((x) => x.ageGroup == 1.0)
-      .reduce((acc, it) => {
-        acc[it.state] = acc[it.state] + +it.count || +it.count
-        return acc
-      }, {})
-    var groupedDataAgeGroup2 = dataArray
-      .filter((x) => x.ageGroup == 2.0)
-      .reduce((acc, it) => {
-        acc[it.state] = acc[it.state] + +it.count || +it.count
-        return acc
-      }, {})
-    var groupedDataAgeGroup3 = dataArray
-      .filter((x) => x.ageGroup == 3.0)
-      .reduce((acc, it) => {
-        acc[it.state] = acc[it.state] + +it.count || +it.count
-        return acc
-      }, {})
-    let minVal = 0
+    var groupby_female = arr.filter((x) => x.gender == 'F')
+                            .reduce((acc, it) => {
+                              acc[it.state] = acc[it.state] + +it.count || +it.count
+                              return acc
+                            }, {})
+      
+    var groupby_kids = arr.filter((x) => x.ageGroup == 1.0)
+                          .reduce((acc, it) => {
+                            acc[it.state] = acc[it.state] + +it.count || +it.count
+                            return acc
+                          }, {})
 
-  
+    var groupby_teens = arr.filter((x) => x.ageGroup == 2.0)
+                            .reduce((acc, it) => {
+                              acc[it.state] = acc[it.state] + +it.count || +it.count
+                              return acc
+                            }, {})
+    
+    var groupby_adults = arr.filter((x) => x.ageGroup == 3.0)
+                            .reduce((acc, it) => {
+                              acc[it.state] = acc[it.state] + +it.count || +it.count
+                              return acc
+                            }, {})
+
+    let min = 0
 
     d3.json('./data/us-states.json', function (json) {
-      Object.keys(groupedData).forEach(function (key) {
-        var dataState = key
-        var dataValue = groupedData[key]
-        maxVal = Math.max(maxVal, dataValue)
+      Object.keys(groupby_gender).forEach(function (key) {
+        var state_key = key
+        var data_val = groupby_gender[key]
+        max = Math.max(max, data_val)
 
         for (var j = 0; j < json.features.length; j++) {
-          var jsonState = json.features[j].properties.name
-          if (dataState == jsonState) {
-            json.features[j].properties.value = dataValue
+          var state_json = json.features[j].properties.name
+          if (state_key === state_json) {
+            json.features[j].properties.value = data_val
             break
           }
         }
@@ -161,14 +159,14 @@ let state_map = function () {
 
       svg.call(tip)
 
-      let ramp = d3
+      let color_range = d3
         .scaleSequential(
           d3.interpolate('rgb(254,235,226)', 'rgb(174,1,126)'),
         )
-        .domain([minVal, maxVal])
+        .domain([min, max])
 
       var div = d3
-        .select('body')
+        .select('#map_canvas')
         .append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0)
@@ -181,13 +179,14 @@ let state_map = function () {
           .append('path')
           .attr('d', path)
           .attr('transform', 'translate(0,-100)')
-          .attr('z-index', 1)
-          .style('z-index', 1)
           .style('stroke', 'black')
-          .style('stroke-width', '1.5')
+          .style('stroke-width', '1.2')
+          .style('z-index', 1)
           .style('fill', function (d) {
-            return ramp(
-              d.properties.value === undefined ? 0 : d.properties.value,
+            
+            console.log('d', json.features);
+            return color_range(
+              d.properties.value === undefined ? 259 : d.properties.value,
             )
           })
           .on('mouseover', function (d) {
@@ -197,21 +196,20 @@ let state_map = function () {
             if (!val) {
               val = 0
             }
-            div.transition().duration(200).style('opacity', 0.9)
-            div
-              .html(
-                'Total deaths in ' + d.properties.name + ' are: ' + val,
-              )
-              .style('left', d3.event.pageX + 'px')
-              .style('top', d3.event.pageY - 28 + 'px')
+            div.transition()
+                .duration(200)
+                .style('opacity', 0.9)
+            div.html('Total deaths in ' + d.properties.name + ' are: ' + val,)
+                .style('top', d3.event.pageY - 28 + 'px')
+                .style('left', d3.event.pageX + 'px')
             tip.show(d)
             var state = d.properties.name
             var dataset = [
-              groupedDataMale[state] || 0,
-              groupedDataFemale[state] || 0,
-              groupedDataAgeGroup1[state] || 0,
-              groupedDataAgeGroup2[state] || 0,
-              groupedDataAgeGroup3[state] || 0,
+              groupby_male[state] || 0,
+              groupby_female[state] || 0,
+              groupby_kids[state] || 0,
+              groupby_teens[state] || 0,
+              groupby_adults[state] || 0,
             ]
             var barHeight = 25
             var tipSVG = div
@@ -236,7 +234,7 @@ let state_map = function () {
               .attr('width', x)
               .attr('height', barHeight - 1)
               .attr('fill', function (d, i) {
-                return 'cyan'
+                return 'limegreen'
               })
             bar
               .append('text')
@@ -286,9 +284,8 @@ let state_map = function () {
           .enter()
           .append('circle')
           .attr('transform', 'translate(0,-100)')
-          .attr('z-index', 10000)
           .style('z-index', 10000)
-          .style('opacity', 0.6)
+          .style('opacity', 0.75)
           .attr('cx', function (d) {
             return projection([d.lng, d.lat])[0]
           })
@@ -296,20 +293,20 @@ let state_map = function () {
             return projection([d.lng, d.lat])[1]
           })
           .attr('r', function (d) {
-            return Math.sqrt(parseInt(d.males + d.females) * 0.02) 
+            return Math.sqrt((d.males + d.females) * 0.02) 
           })
-          .style('fill', 'blue')
+          .style('fill', 'black')
           .on('mouseover', show_tool)
           .on('mouseout', hide_tool)
       })
 
-      axisScale = d3.scaleLinear().domain(ramp.domain()).range([50, 550])
+      axisScale = d3.scaleLinear().domain(color_range.domain()).range([50, 550])
       axisBottom = (g) =>
         g
           .attr('class', `x-axis`)
           .attr(
             'transform',
-            'translate(' + window.screen.availWidth / 2.9 + ',0)',
+            'translate(' + window.screen.availWidth / 3 + ',' +(height -50) +')',
           )
           .call(d3.axisBottom(axisScale).ticks(10).tickSize(-10))
       const linearGradient = svg
@@ -318,9 +315,9 @@ let state_map = function () {
       linearGradient
         .selectAll('stop')
         .data(
-          ramp.ticks().map((t, i, n) => ({
+          color_range.ticks().map((t, i, n) => ({
             offset: `${(100 * i) / n.length}%`,
-            color: ramp(t),
+            color: color_range(t),
           })),
         )
         .enter()
@@ -331,11 +328,11 @@ let state_map = function () {
         .append('g')
         .attr(
           'transform',
-          'translate(' + (window.screen.availWidth / 2.9 + 42) + ',0)',
+          'translate(' + (window.screen.availWidth / 3 + 42)+ ',' +(height - 120) +')',
         )
         .append('rect')
         .attr('transform', 'translate(10,50)')
-        .attr('width', 501)
+        .attr('width', 500)
         .attr('height', 20)
         .style('fill', 'url(#linear-gradient)')
       svg.append('g').call(axisBottom)

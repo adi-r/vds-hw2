@@ -15,50 +15,78 @@
   </head>
 
   <body>
+    <div id = "map_canvas">
     <h3 class="w3-center">
       Slate Gun Deaths in USA
     </h3>
 
-    <div class="w3-content w3-container w3-padding-64" id="about">
+    <div class="w3-content w3-container w3-padding-100" id="map_canvas">
       <div class="w3-row">
         <div class="w3-col m12 w3-hide-small w3-padding-large"></div>
        
-        <div class="float-container">
-          <div class="float-child">
-            <p><b>Select Age Group</b></p>
-            <select name="age_group" id="age_group" onchange="get_map()">
-              <option value="-1">All Ages</option>
-              <option value="1.0">Kids</option>
-              <option value="2.0">Teens</option>
-              <option value="3.0">Adults</option>
-            </select>
-            
-          </div>
-
-          <div class="float-child">
-            <p><b>Select Gender</b></p>
-            <select name="gender_select" id="gender_select" onchange="get_map()">
-              <option value="-1">All Genders</option>
-              <option value="M">Males</option>
-              <option value="F">Females</option>
-            </select>
-          </div>
-          
-        </div>
         
+        <div class="float-child" style="display:inline-block;">
+          <p><b>Select Age Group</b></p>
+          <select name="age_group" id="age_group" onchange="get_map()">
+            <option value="-1">All Ages</option>
+            <option value="1.0">Kids</option>
+            <option value="2.0">Teens</option>
+            <option value="3.0">Adults</option>
+          </select>
+        </div>
+
+        <div class="float-child" style="display:inline-block;">
+          <p><b>Select Gender</b></p>
+          <select name="gender_select" id="gender_select" onchange="get_map()">
+            <option value="-1">All Genders</option>
+            <option value="M">Males</option>
+            <option value="F">Females</option>
+          </select>
+        </div> 
       </div>
       
     </div>
-  
-    <div class="white-hat-writeup">
-      <p style = "padding-left : 200px ; padding-right :  200px ">
-      For the overall gun related deaths in the US, I implemented a choropleth map that shows the number of deaths in each state normalized by the population of that state. This gives us an accurate version of events as no misrepresentation occurs due to absolute values. 
-      The number of deaths in each city is displayed in the form of  bubbles, where the larger the size of the bubble, the more the number of deaths and vice-versa. This makes it easy to identify cities where a large number of murders have taken place. This integration of map types allows users to more efficiently grasp data both at the state and city level.
-       Hovering above a city or state gives further information regarding number of deaths per gender and per age group in the form of a bar graph. Additionally, users also have the option of interacting with the visualization through filtering the data by both age group and gender. This granular level of control gives users more insights into the data, allowing for more accurate inferences.  
-      The color scheme used for the choropleth was taken from colorbrewer, and is color blind friendly. The color scheme used is sequential in nature. The lighter the color, the less the number of deaths and vice-versa. The labels and titles are appropriately marked for easy understanding of values and ranges.
-      </p>
-    </div>
 
+
+  
+ 
+
+
+</div>
+
+   
+<div>
+  <div style = "padding-left : 200px ; padding-right :  200px; text-align : 'center'" class="white-hat-writeup">
+    <p >
+      <h3><strong>Navigating the White Hat Viz.</strong></h3>
+      <ul>
+        <li>
+          The visualiztion is made by integrating choropleth and bubble maps for state level and city level statistics respectively.<br/>
+          The color scheme used is color blind safe and sourced from colorbrewer. The lighter the color, the less the number of deaths in the state and vice-versa.
+        </li>
+        <li>
+          The bubble map shows number of gun deaths in cities in the US. The size of the bubble corresponds with the number of deaths.<br/>
+          The larger the bubble, the more the number of deaths and vice-versa.
+        </li>
+        <li>
+          The data has been normalized based on each states population to give an accurate representation of the statistics behind gun deaths.<br/>
+          Users can interact with the viz by hovering around diff. states to get more info regarding number of deaths per gender and per age group. 
+        </li>
+        <li>
+          Users can also manipulate data by filtering and grouping the data based on both age group and gender by selecting the corresponding values from the drop-down menu.
+        </li>
+      </ul>
+      <br/><br/>
+
+      <h3><strong>Black Hat Viz.</strong></h3>
+      <ul>
+        <li>
+          
+        </li>
+      </ul>
+    </p>
+  </div>
+</div>
   </body>
   <script type="text/javascript" src="./js/script.js"></script>
 
