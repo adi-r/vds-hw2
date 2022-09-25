@@ -1,41 +1,43 @@
+let height = window.screen.availHeight / 1.5
 let width = window.screen.availWidth
-let height = window.screen.availHeight / 1.2
 
 let tooltip = d3.select('#map_canvas')
                 .append('div')
                 .attr('class', 'tooltip')
 
+//Position of the tooltip relative to the cursor
+var tooltip_offset = { x: 10, 
+                      y: 100 
+}
 let active = d3.select(null),
   centered,
   current_state,
   current_state_selection
 
-
-//Position of the tooltip relative to the cursor
-var tooltip_offset = { x: 5, 
-                      y: 100 
-                    }
-
-//Create a tooltip, hidden at the start
+//Create a tooltip
 function show_tool(d) {
   console.log('current_state', current_state)
   if (d.state_name === current_state) {
-    current_state_selection.attr('fill-opacity', 0.4)
+    current_state_selection.attr('fill-opacity', 0.6)
   }
 
-  d3.select(this).attr('fill-opacity', 0.4)
+  d3.select(this).attr('fill-opacity', 0.6)
 
   tooltip.style('position' , 'absolute')
-          .style('opacity', 0)
+          .style('opacity', 0.9)
           .style('display', 'block')
           .style('padding' , "20px")
-          .style('background-color', 'rgba(255,255,255,0.0)')
+          .style('background-color', 'rgba(242,243,244,0.9)')
           .style('color' , 'black')
-          .style('text-align' , "left" )
+          .style('text-align' , "center" )
+          .style('font-size', '12px')
+          .style('width', '180px')
+          .style('height', '150px')
+          .style('padding', '2px')
           .style('top',  (d3.select(this).attr("cy") + tooltip_offset.y) + 'px')
           .style('left', (d3.select(this).attr("cx") + tooltip_offset.x)  + 'px')
-          .html('City:' + d.city + ' <br/>  Males: ' + d.males + ' <br/> Females: ' + d.females + 
-                '<br/> Children:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + ((d.males + d.females) - d.kids - d.teens),
+          .html('Death count in ' + d.city + '<br/> Kids:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + ((d.males + d.females) - d.kids - d.teens)  
+          + ' <br/>  Males: ' + d.males + ' <br/> Females: ' + d.females,
                 )    
 }
       
@@ -49,7 +51,7 @@ function hide_tool(d) {
   tooltip.style('position' , 'absolute')
           .style('display', 'none')
           .style('padding' , "20px")
-          .style('background-color', 'rgba(255,255,255,0.4)')
+          .style('background-color', 'rgba(242,243,244,0.4)')
           .style('color' , 'black')    
 }
 
@@ -154,7 +156,7 @@ let state_map = function () {
                   .html(function (d) {
                     var x = +d.properties.value
                     return
-                    ;+"<div id='tipDiv'></div><br>"
+                    ;+"<div id='tip'></div><br>"
                   })
 
       svg.call(tip)
@@ -165,7 +167,7 @@ let state_map = function () {
       var div = d3.select('#map_canvas')
                   .append('div')
                   .attr('class', 'tooltip')
-                  .style('opacity', 0)
+                  .style('opacity', 0.9)
 
       d3.csv('./data/city_freq.csv', function (data) {
         
@@ -175,11 +177,10 @@ let state_map = function () {
             .append('path')
             .attr('d', path)
             .attr('transform', 'translate(0,-100)')
-            .style('stroke', 'black')
             .style('stroke-width', '1.2')
+            .style('stroke', 'black')
             .style('z-index', 1)
             .style('fill', function (d) {
-            
             console.log('d', json.features);
             return color_range(
               d.properties.value === undefined ? 259 : d.properties.value,
@@ -187,18 +188,18 @@ let state_map = function () {
           })
           .on('mouseover', function (d) {
             let id = d
-            d3.selectAll('#tipDiv').remove()
+            d3.selectAll('#tip').remove()
             val = d.properties.value
             if (!val) {
               val = 0
             }
             div.transition()
-                .duration(200)
-                .style('opacity', 0.0)
-            //     console.log('d', d.properties)
-            // div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + (val/100000.0) * 100,)
-                .style('top', d3.event.pageY - 28 + 'px')
-                .style('left', d3.event.pageX + 'px')
+                .duration(300)
+                .style('opacity', 0.9)
+                console.log('d', d.properties)
+            div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + ((val/100000.0) * 100).toFixed(3) + '%',)
+                .style('top', d3.event.pageY - 50 + 'px')
+                .style('left', d3.event.pageX - 5 + 'px')
             tip.show(d)
             var state = d.properties.name
             var dataset = [
@@ -256,7 +257,7 @@ let state_map = function () {
                 })
           })
           .on('mouseout', function (d) {
-            div.transition().duration(747).style('opacity', 0)
+            div.transition().duration(500).style('opacity', 0)
           })
 
         let cities = svg.append('g')
@@ -275,7 +276,7 @@ let state_map = function () {
             .append('circle')
             .attr('transform', 'translate(0,-100)')
             .style('z-index', 10000)
-            .style('opacity', 0.75)
+            .style('opacity', 0.7)
             .attr('cx', function (d) {
               return projection([d.lng, d.lat])[0]
             })

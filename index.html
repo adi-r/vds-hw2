@@ -19,12 +19,10 @@
       <strong>Slate Gun Deaths (White Hat)</strong>
     </h1>
 
-    <div class="w3-content w3-container w3-padding-100" id="map_canvas">
+    <div class="w3-content w3-container" id="map_canvas">
       <div class="w3-row">
-        <div class="w3-col m12 w3-hide-small w3-padding-large"></div>
-       
-        
-        <div class="float-child" style="display:inline-block;">
+        <div class="w3-col m8"></div>
+        <div class="filter" style="display:inline-block;">
           <p><b>Select Gender</b></p>
           <select name="gender_select" id="gender_select" onchange="get_map()">
             <option value="-1">All Genders</option>
@@ -33,7 +31,7 @@
           </select>
         </div>
 
-        <div class="float-child" style="display:inline-block;">
+        <div class="filter" style="display:inline-block;">
           <p><b>Select Age Group</b></p>
           <select name="age_group" id="age_group" onchange="get_map()">
             <option value="-1">All Ages</option>

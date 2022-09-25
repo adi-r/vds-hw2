@@ -2,7 +2,7 @@ body,
 html {
     text-align: justify;
     height: 100%;
-    line-height: 1.8;
+    line-height: 1.5;
     background-color: #F2F3F4;
     color: black;
 }
@@ -11,9 +11,9 @@ html {
     padding: 20px;
 }
 
-.float-child {
-    padding: 5px;
-    padding-bottom: 10px;
+.filter {
+    padding-bottom: 5px;
+    padding-right: 5px;
     width: 50%;
     float: left;
 }
@@ -31,25 +31,29 @@ html {
     top: 30px;
 }
 
+.axis line,
+.axis path {
+    stroke: black;
+    shape-rendering: crispEdges;
+    fill: none;
+}
+
 .axis text {
     font: 10px sans-serif;
 }
 
-.axis line,
-.axis path {
-    fill: none;
-    stroke: rgb(0, 0, 0);
-    shape-rendering: crispEdges;
-}
-
 .tooltip {
     text-align: center;
-    width: 250px;
-    height: 150px;
+    font-size: 12px;
+    width: 280px;
+    height: 200px;
     padding: 2px;
     position: absolute;
-    border: 1px;
+    border: 3px;
     background: #F2F3F4;
+    color: black;
+    pointer-events: none;
+
 }
 
 .collapsible {
