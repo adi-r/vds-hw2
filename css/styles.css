@@ -1,0 +1,103 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Lato', sans-serif;
+}
+
+body,
+html {
+    height: 100%;
+    color: black;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.float-container {
+    border: 3px solid #fff;
+    padding: 20px;
+}
+
+.float-child {
+    width: 50%;
+    float: left;
+    padding: 7px;
+    border: 2px solid red;
+}
+
+.w3-wide {
+    letter-spacing: 10px;
+}
+.w3-hover-opacity {
+    cursor: pointer;
+}
+.bgimg-1 {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bgimg-1 {
+    background-image: url('/images/back.jpg');
+    min-height: 100%;
+}
+
+@media only screen and (max-device-width: 1600px) {
+    .bgimg-1,
+    .bgimg-2,
+    .bgimg-3 {
+    background-attachment: scroll;
+    min-height: 400px;
+    }
+}
+.buttons {
+    width: 100px;
+    margin: 0 auto;
+    display: inline;
+}
+
+.action_btn {
+    width: 100px;
+    margin: 0 auto;
+    display: inline;
+}
+
+/* body {
+font: 11px sans-serif;
+background-color: #ffffff;
+} */
+
+.legend {
+position: absolute;
+left: 20px;
+top: 30px;
+}
+
+.axis text {
+font: 10px sans-serif;
+}
+
+.axis line,
+.axis path {
+fill: none;
+stroke: rgb(0, 0, 0);
+shape-rendering: crispEdges;
+}
+
+div.tooltip {
+position: absolute;
+text-align: center;
+width: 300px;
+height: 150px;
+padding: 2px;
+font: 12px sans-serif;
+background: white;
+border: 1px;
+border-radius: 8px;
+pointer-events: none;
+box-shadow: 2px;
+}
