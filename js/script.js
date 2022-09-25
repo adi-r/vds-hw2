@@ -193,7 +193,7 @@ let state_map = function () {
             div.transition()
                 .duration(200)
                 .style('opacity', 0.9)
-            div.html('Total deaths in ' + d.properties.name + ' are: ' + val,)
+            div.html( d.properties.name + "'s tot. no of deaths: " + val,)
                 .style('top', d3.event.pageY - 28 + 'px')
                 .style('left', d3.event.pageX + 'px')
             tip.show(d)
@@ -244,7 +244,7 @@ let state_map = function () {
                     case 1:
                       return 'Females: ' + d
                     case 2:
-                      return 'Children : ' + d
+                      return 'Kids : ' + d
                     case 3:
                       return 'Teens : ' + d
                     case 4:
