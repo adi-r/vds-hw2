@@ -193,7 +193,7 @@ let state_map = function () {
             }
             div.transition()
                 .duration(200)
-                .style('opacity', 0.9)
+                .style('opacity', 0.0)
                 console.log('d', d.properties)
             div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + (val/100000.0) * 100,)
                 .style('top', d3.event.pageY - 28 + 'px')
