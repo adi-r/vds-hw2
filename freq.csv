@@ -1,4 +1,4 @@
-city,males,females,babies,young,elderly,lat,lng,state,state_name
+city,males,females,kids,teens,elderly,lat,lng,state,state_name
 Abbeville,3,0,0,0,3,29.9746502,-92.1342921,LA,Louisiana
 Algiers,2,0,0,0,2,29.9510514,-90.08108878,LA,Louisiana
 Ascension Parish,1,0,0,0,1,30.20465845,-90.88963011,LA,Louisiana

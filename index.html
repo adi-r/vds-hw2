@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
-    
+
     <title>White Hat</title>
   </head>
 
@@ -25,7 +25,8 @@
        
         <div class="float-container">
           <div class="float-child">
-            <select name="age_group" id="age_group" onchange="generateMap()">
+            <p><b>Select Age Group</b></p>
+            <select name="age_group" id="age_group" onchange="get_map()">
               <option value="-1">All Ages</option>
               <option value="1.0">Kids</option>
               <option value="2.0">Teens</option>
@@ -36,7 +37,7 @@
 
           <div class="float-child">
             <p><b>Select Gender</b></p>
-            <select name="gender_select" id="gender_select" onchange="generateMap()">
+            <select name="gender_select" id="gender_select" onchange="get_map()">
               <option value="-1">All Genders</option>
               <option value="M">Males</option>
               <option value="F">Females</option>
