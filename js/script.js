@@ -26,6 +26,7 @@ function show_tool(d) {
   d3.select(this).attr('fill-opacity', 0.4)
 
   tooltip.style('position' , 'absolute')
+          .style('opacity', 0)
           .style('display', 'block')
           .style('padding' , "20px")
           .style('background-color', 'rgba(255,255,255,0.6)')
@@ -194,8 +195,8 @@ let state_map = function () {
             div.transition()
                 .duration(200)
                 .style('opacity', 0.0)
-                console.log('d', d.properties)
-            div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + (val/100000.0) * 100,)
+            //     console.log('d', d.properties)
+            // div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + (val/100000.0) * 100,)
                 .style('top', d3.event.pageY - 28 + 'px')
                 .style('left', d3.event.pageX + 'px')
             tip.show(d)
