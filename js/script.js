@@ -59,7 +59,7 @@ let projection = d3.geoAlbersUsa()
 let state_map = function () {
   let path = d3.geoPath()
                 .projection(projection)
-  state_freq = './data/state_freq.csv'
+  state_freq = './data/state_stats.csv'
   d3.selectAll('svg').remove()
 
   let svg = d3.select('#map_canvas')
@@ -193,7 +193,7 @@ let state_map = function () {
             div.transition()
                 .duration(200)
                 .style('opacity', 0.9)
-            div.html(d.properties.name + 's number of deaths: ' + val,)
+            div.html(d.properties.name + "'s number of deaths:" + val,)
                 .style('top', d3.event.pageY - 28 + 'px')
                 .style('left', d3.event.pageX + 'px')
             tip.show(d)
