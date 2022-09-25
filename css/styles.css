@@ -1,18 +1,13 @@
-body, h1, h2, h3, 
-h4, h5, h6 {
-    font-family: 'Lato', sans-serif;
-}
-
 body,
 html {
     height: 100%;
+    background-color: #F2F3F4;
     color: black;
     line-height: 1.8;
     text-align: justify;
 }
 
 .float-container {
-    border: 3px solid #fff;
     padding: 20px;
 }
 
@@ -28,32 +23,6 @@ html {
 .w3-hover-opacity {
     cursor: pointer;
 }
-.bgimg-1 {
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.bgimg-1 {
-    background-image: url('/images/back.jpg');
-    min-height: 100%;
-}
-
-@media only screen and (max-device-width: 1600px) {
-    .bgimg-1,
-    .bgimg-2,
-    .bgimg-3 {
-    background-attachment: scroll;
-    min-height: 400px;
-    }
-}
-
-
-/* body {
-font: 11px sans-serif;
-background-color: #ffffff;
-} */
 
 .legend {
     position: absolute;
@@ -72,7 +41,7 @@ background-color: #ffffff;
     shape-rendering: crispEdges;
 }
 
-div.tooltip {
+.tooltip {
     position: absolute;
     text-align: center;
     width: 300px;
@@ -87,7 +56,7 @@ div.tooltip {
 }
 
 .collapsible {
-    background-color: #777;
+    background-color: #c51b8a;
     color: white;
     cursor: pointer;
     padding: 18px;
