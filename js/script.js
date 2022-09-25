@@ -167,6 +167,7 @@ let state_map = function () {
                   .style('opacity', 0)
 
       d3.csv('./data/city_freq.csv', function (data) {
+        
         svg.selectAll('path')
             .data(json.features)
             .enter()
@@ -193,7 +194,8 @@ let state_map = function () {
             div.transition()
                 .duration(200)
                 .style('opacity', 0.9)
-            div.html(d.properties.name + "'s number of deaths:" + val,)
+                console.log('d', d.properties)
+            div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + (val/100000.0) * 100,)
                 .style('top', d3.event.pageY - 28 + 'px')
                 .style('left', d3.event.pageX + 'px')
             tip.show(d)
