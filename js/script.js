@@ -29,7 +29,7 @@ function show_tool(d) {
           .style('opacity', 0)
           .style('display', 'block')
           .style('padding' , "20px")
-          .style('background-color', 'rgba(255,255,255,0.6)')
+          .style('background-color', 'rgba(255,255,255,0.0)')
           .style('color' , 'black')
           .style('text-align' , "left" )
           .style('top',  (d3.select(this).attr("cy") + tooltip_offset.y) + 'px')
