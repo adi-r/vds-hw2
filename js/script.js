@@ -147,42 +147,36 @@ let state_map = function () {
             }
       }
 
-      var tip = d3
-        .tip()
-        .attr('class', 'd3-tip')
-        .offset([-40, 0])
-        .html(function (d) {
-          var x = +d.properties.value
-          return
-          ;+"<div id='tipDiv'></div><br>"
-        })
+      var tip = d3.tip()
+                  .attr('class', 'd3-tip')
+                  .offset([-40, 0])
+                  .html(function (d) {
+                    var x = +d.properties.value
+                    return
+                    ;+"<div id='tipDiv'></div><br>"
+                  })
 
       svg.call(tip)
 
-      let color_range = d3
-        .scaleSequential(
-          d3.interpolate('rgb(254,235,226)', 'rgb(174,1,126)'),
-        )
-        .domain([min, max])
+      let color_range = d3.scaleSequential(d3.interpolate('rgb(253,224,221)', 'rgb(174,1,126)'),)
+                          .domain([min, max])
 
-      var div = d3
-        .select('#map_canvas')
-        .append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0)
+      var div = d3.select('#map_canvas')
+                  .append('div')
+                  .attr('class', 'tooltip')
+                  .style('opacity', 0)
 
       d3.csv('./data/city_freq.csv', function (data) {
-        svg
-          .selectAll('path')
-          .data(json.features)
-          .enter()
-          .append('path')
-          .attr('d', path)
-          .attr('transform', 'translate(0,-100)')
-          .style('stroke', 'black')
-          .style('stroke-width', '1.2')
-          .style('z-index', 1)
-          .style('fill', function (d) {
+        svg.selectAll('path')
+            .data(json.features)
+            .enter()
+            .append('path')
+            .attr('d', path)
+            .attr('transform', 'translate(0,-100)')
+            .style('stroke', 'black')
+            .style('stroke-width', '1.2')
+            .style('z-index', 1)
+            .style('fill', function (d) {
             
             console.log('d', json.features);
             return color_range(
@@ -212,71 +206,65 @@ let state_map = function () {
               groupby_adults[state] || 0,
             ]
             var barHeight = 25
-            var tipSVG = div
-              .append('svg')
-              .attr('width', 150)
-              .attr('height', barHeight * 5)
-            var x = d3
-              .scaleLinear()
-              .domain([0, d3.max(dataset)])
-              .range([0, 150])
-            var bar = tipSVG
-              .selectAll('g')
-              .data(dataset)
-              .enter()
-              .append('g')
-              .attr('transform', function (d, i) {
-                return 'translate(0,' + i * barHeight + ')'
-              })
-            bar
-              .append('rect')
-
-              .attr('width', x)
-              .attr('height', barHeight - 1)
-              .attr('fill', function (d, i) {
-                return 'limegreen'
-              })
-            bar
-              .append('text')
-              .attr('x', 2)
-              .attr('y', barHeight / 2)
-              .attr('dy', '.35em')
-              .attr('fill', function (d) {
-                if (d === d3.max(dataset)) {
-                  return 'black'
-                } else {
-                  return 'black'
-                }
-              })
-              .style('font-size', '12px')
-              .text(function (d, i) {
-                switch (i) {
-                  case 0:
-                    return 'Males: ' + d
-                  case 1:
-                    return 'Females: ' + d
-                  case 2:
-                    return 'Children : ' + d
-                  case 3:
-                    return 'Teens : ' + d
-                  case 4:
-                    return 'Adults : ' + d
-                }
-              })
+            var tipSVG = div.append('svg')
+                            .attr('width', 150)
+                            .attr('height', barHeight * 5)
+            var x = d3.scaleLinear()
+                      .domain([0, d3.max(dataset)])
+                      .range([0, 150])
+            var bar = tipSVG.selectAll('g')
+                            .data(dataset)
+                            .enter()
+                            .append('g')
+                            .attr('transform', function (d, i) {
+                              return 'translate(0,' + i * barHeight + ')'
+                            })
+            bar.append('rect')
+                .attr('width', x)
+                .attr('height', barHeight - 1)
+                .attr('fill', function (d, i) {
+                  return 'limegreen'
+                })
+            bar.append('text')
+                .attr('x', 2)
+                .attr('y', barHeight / 2)
+                .attr('dy', '.35em')
+                .attr('fill', function (d) {
+                  if (d === d3.max(dataset)) {
+                    return 'black'
+                  } else {
+                    return 'black'
+                  }
+                })
+                .style('font-size', '12px')
+                .text(function (d, i) {
+                  switch (i) {
+                    case 0:
+                      return 'Males: ' + d
+                    case 1:
+                      return 'Females: ' + d
+                    case 2:
+                      return 'Children : ' + d
+                    case 3:
+                      return 'Teens : ' + d
+                    case 4:
+                      return 'Adults : ' + d
+                  }
+                })
           })
           .on('mouseout', function (d) {
             div.transition().duration(747).style('opacity', 0)
           })
 
-        let cities = svg
-          .append('g')
-          .attr('class', 'circles')
-          .attr('cursor', 'pointer')
+        let cities = svg.append('g')
+                        .attr('class', 'circles')
+                        .attr('cursor', 'pointer')
+          
 
-        let features = svg
-          .append('g')
-          .attr('class', 'features')
-          .attr('cursor', 'pointer')
+        let features = svg.append('g')
+                          .attr('class', 'features')
+                          .attr('cursor', 'pointer')
+          
 
         cities
           .selectAll('path')
