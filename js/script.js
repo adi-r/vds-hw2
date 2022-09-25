@@ -58,7 +58,7 @@ let projection = d3.geoAlbersUsa()
 let state_map = function () {
   let path = d3.geoPath()
                 .projection(projection)
-  statesData = './data/state_frequency.csv'
+  statesData = './data/state_freq.csv'
   d3.selectAll('svg').remove()
 
   let svg = d3.select('body')
@@ -72,7 +72,6 @@ let state_map = function () {
   var gender = gender_type.options[gender_type.selectedIndex].value;
 
   d3.csv(statesData, function (data) {
-    //   console.log(data);
     let dataArray = []
     let maxVal = 0
     for (var d = 0; d < data.length; d++) {
@@ -174,7 +173,7 @@ let state_map = function () {
         .attr('class', 'tooltip')
         .style('opacity', 0)
 
-      d3.csv('./freq.csv', function (data) {
+      d3.csv('./data/city_freq.csv', function (data) {
         svg
           .selectAll('path')
           .data(json.features)
