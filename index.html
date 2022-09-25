@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
+    <style src="./css/styles.css"></style>
+    <title>White Hat</title>
+  </head>
+
+  <body>
+    <h3 class="w3-center">
+      Gun Deaths in USA: White Hat Version
+    </h3>
+
+    <div class="w3-content w3-container w3-padding-64" id="about">
+      <div class="w3-row">
+        <div class="w3-col m12 w3-hide-small w3-padding-large"></div>
+       
+        <div class="float-container">
+          <div class="float-child">
+            <p><b>Select Age Group</b></p>
+            <input
+              type="radio"
+              id="agegroup0"
+              name="age_group_select"
+              onchange="generateMap()"
+              value="-1"
+              checked
+            />
+            <label for="agegroups">All groups</label>
+            <br />
+            <input
+              type="radio"
+              id="agegroup1"
+              name="age_group_select"
+              onchange="generateMap()"
+              value="1.0"
+            />
+            <label for="agegroups">Children</label>
+            <br />
+            <input
+              type="radio"
+              id="agegroup2"
+              name="age_group_select"
+              onchange="generateMap()"
+              value="2.0"
+            />
+            <label for="agegroups">Teen</label>
+            <br />
+            <input
+              type="radio"
+              id="agegroup3"
+              name="age_group_select"
+              onchange="generateMap()"
+              value="3.0"
+            />
+            <label for="agegroups">Adults</label>
+            <br />
+          </div>
+
+          <div class="float-child">
+            <p><b>Select Gender</b></p>
+            <input
+              type="radio"
+              id="g1"
+              onchange="generateMap()"
+              name="age"
+              value="-1"
+              checked
+            />
+            <label for="g1">All</label>
+            <br />
+            <input
+              type="radio"
+              id="g2"
+              onchange="generateMap()"
+              name="age"
+              value="M"
+            />
+            <label for="g2">Males</label>
+            <br />
+            <input
+              type="radio"
+              id="g3"
+              onchange="generateMap()"
+              name="age"
+              value="F"
+            />
+            <label for="g3">Females</label>
+            <br />
+            <br />
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </div>
+
+    <script type="text/javascript">
+      let width = window.screen.availWidth
+      let height = window.screen.availHeight / 1.2
+
+      let tooltip = d3.select('body').append('div').attr('class', 'tooltip')
+
+      let cityPopUp = d3
+        .select('body')
+        .append('g.cityPopUp')
+        .attr('class', 'cityPopUp')
+
+      let active = d3.select(null),
+        centered,
+        current_state,
+        current_state_selection
+
+      function zoomed() {
+        features.attr(
+          'transform',
+          'translate(' + zoom.translate() + ')scale(' + zoom.scale() + ')',
+        )
+        cities.attr(
+          'transform',
+          'translate(' + zoom.translate() + ')scale(' + zoom.scale() + ')',
+        )
+      }
+
+      //Position of the tooltip relative to the cursor
+      var tooltipOffset = { x: 5, y: 100 }
+
+      //Move the tooltip to track the mouse
+      function moveTooltip() {
+
+        console.log("hereeee");
+
+        tooltip
+      }
+
+      //Create a tooltip, hidden at the start
+      function showTooltipCity(d) {
+        if (d.state_name === current_state) {
+          current_state_selection.attr('fill-opacity', 0.4)
+        }
+
+        d3.select(this).attr('fill-opacity', 0.4)
+        console.log( (d3.select(this).attr("cx") + tooltipOffset.x)  + 'px' , (d3.select(this).attr("cy") + tooltipOffset.y)  + 'px');
+
+        tooltip
+        .style('position' , 'absolute')
+        .style('background-color', 'rgba(255,255,255,0.4)')
+        .style('padding' , "20px")
+        .style('color' , 'black')
+        .style('text-align' , "left" )
+        .style('left', (d3.select(this).attr("cx") + tooltipOffset.x)  + 'px')
+        .style('display', 'block')
+        .style('top',  (parseInt(d3.select(this).attr("cy")) + parseInt(tooltipOffset.y))  + 'px')
+          .html(
+            'City:' +
+              d.city +
+              ' <br/>  Males: ' +
+              d.males +
+              ' <br/> Females: ' +
+              d.females +
+              '<br/> Children:' +
+              d.babies +
+              ' <br/> Teens:' +
+              d.young +
+              ' <br/> Adults:' +
+              (parseInt(d.males) +
+                parseInt(d.females) -
+                parseInt(d.babies) -
+                parseInt(d.young)),
+          )
+
+          
+      }
+      
+      function hideTooltipCity(d) {
+        if (d.state_name === current_state) {
+          current_state_selection.attr('fill-opacity', 0.4)
+        }
+
+        d3.select(this).attr('fill-opacity', 0.9)
+
+
+        console.log( (d3.select(this).attr("cx") + tooltipOffset.x)  + 'px' , (d3.select(this).attr("cy") + tooltipOffset.y)  + 'px');
+
+        tooltip
+        .style('position' , 'absolute')
+        .style('background-color', 'rgba(255,255,255,0.4)')
+        .style('padding' , "20px")
+        .style('color' , 'black')
+        .style('display', 'none')
+          
+      }
+
+      function clickCity() {}
+
+      let femaleColor = '#00ff00'
+      let maleColor = '#ff0000'
+
+      var ageGroup1Color = '#e5f5e0'
+      var ageGroup2Color = '#a1d99b'
+      var ageGroup3Color = '#31a354'
+
+      let projection = d3
+        .geoAlbersUsa()
+        .translate([width / 2, height / 2])
+        .scale([1300])
+      let toggle = 0
+
+      let generateMapStates = function () {
+        toggle = 0
+        let path = d3.geoPath().projection(projection)
+        statesData = './data/state_frequency.csv'
+        d3.selectAll('svg').remove()
+
+        let svg = d3
+          .select('body')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+
+        var zoom = d3.zoom().scaleExtent([1, 10]).on('zoom', zoomed)
+
+        d3.selectAll.call(zoom)
+
+        let valueAge = -1
+        let valueGender = -1
+
+        if (document.getElementById('agegroup0').checked) {
+          valueAge = document.getElementById('agegroup0').value
+        } else if (document.getElementById('agegroup1').checked) {
+          valueAge = document.getElementById('agegroup1').value
+        } else if (document.getElementById('agegroup2').checked) {
+          valueAge = document.getElementById('agegroup2').value
+        } else if (document.getElementById('agegroup3').checked) {
+          valueAge = document.getElementById('agegroup3').value
+        }
+
+        if (document.getElementById('g1').checked) {
+          valueGender = document.getElementById('g1').value
+        } else if (document.getElementById('g2').checked) {
+          valueGender = document.getElementById('g2').value
+        } else if (document.getElementById('g3').checked) {
+          valueGender = document.getElementById('g3').value
+        }
+
+        //console.log(valueAge);
+
+        d3.csv(statesData, function (data) {
+          //   console.log(data);
+          let dataArray = []
+          let maxVal = 0
+          for (var d = 0; d < data.length; d++) {
+            if (
+              (valueAge == -1 ||
+                (valueAge == 1 && data[d].ageGroup <= 1) ||
+                valueAge == data[d].ageGroup) &&
+              (valueGender == -1 || valueGender == data[d].gender)
+            ) {
+              dataArray.push(data[d])
+            }
+          }
+
+          var groupedData = dataArray.reduce((acc, it) => {
+            acc[it.state] = acc[it.state] + +it.count || +it.count
+            return acc
+          }, {})
+
+          var groupedDataMale = dataArray
+            .filter((x) => x.gender == 'M')
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+
+          var groupedDataFemale = dataArray
+            .filter((x) => x.gender == 'F')
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup1 = dataArray
+            .filter((x) => x.ageGroup == 1.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup2 = dataArray
+            .filter((x) => x.ageGroup == 2.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup3 = dataArray
+            .filter((x) => x.ageGroup == 3.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          let minVal = 0
+
+       
+
+          d3.json('./data/us-states.json', function (json) {
+            Object.keys(groupedData).forEach(function (key) {
+              var dataState = key
+              var dataValue = groupedData[key]
+              maxVal = Math.max(maxVal, dataValue)
+
+              for (var j = 0; j < json.features.length; j++) {
+                var jsonState = json.features[j].properties.name
+                if (dataState == jsonState) {
+                  json.features[j].properties.value = dataValue
+                  break
+                }
+              }
+
+            })
+
+            d3.functor = function functor(v) {
+              return typeof v === 'function'
+                ? v
+                : function () {
+                    return v
+                  }
+            }
+
+            var tip = d3
+              .tip()
+              .attr('class', 'd3-tip')
+              .offset([-40, 0])
+              .html(function (d) {
+                var x = +d.properties.value
+                return
+                ;+"<div id='tipDiv'></div><br>"
+              })
+
+            svg.call(tip)
+
+            let ramp = d3
+              .scaleSequential(
+                d3.interpolate('rgb(245,245,245)', 'rgb(255,0,0)'),
+              )
+              .domain([minVal, maxVal])
+
+            var div = d3
+              .select('body')
+              .append('div')
+              .attr('class', 'tooltip')
+              .style('opacity', 0)
+
+            d3.csv('./freq.csv', function (data) {
+              svg
+                .selectAll('path')
+                .data(json.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .attr('transform', 'translate(0,-100)')
+                .attr('z-index', 1)
+                .style('z-index', 1)
+                .style('stroke', 'black')
+                .style('stroke-width', '1.5')
+                .style('fill', function (d) {
+                  return ramp(
+                    d.properties.value === undefined ? 0 : d.properties.value,
+                  )
+                })
+                .on('mouseover', function (d) {
+                  let id = d
+                  d3.selectAll('#tipDiv').remove()
+                  val = d.properties.value
+                  if (!val) {
+                    val = 0
+                  }
+                  div.transition().duration(200).style('opacity', 0.9)
+                  div
+                    .html(
+                      'Total deaths in ' + d.properties.name + ' are: ' + val,
+                    )
+                    .style('left', d3.event.pageX + 'px')
+                    .style('top', d3.event.pageY - 28 + 'px')
+                  tip.show(d)
+                  var state = d.properties.name
+                  var dataset = [
+                    groupedDataMale[state] || 0,
+                    groupedDataFemale[state] || 0,
+                    groupedDataAgeGroup1[state] || 0,
+                    groupedDataAgeGroup2[state] || 0,
+                    groupedDataAgeGroup3[state] || 0,
+                  ]
+                  var barHeight = 25
+                  var tipSVG = div
+                    .append('svg')
+                    .attr('width', 150)
+                    .attr('height', barHeight * 5)
+                  var x = d3
+                    .scaleLinear()
+                    .domain([0, d3.max(dataset)])
+                    .range([0, 150])
+                  var bar = tipSVG
+                    .selectAll('g')
+                    .data(dataset)
+                    .enter()
+                    .append('g')
+                    .attr('transform', function (d, i) {
+                      return 'translate(0,' + i * barHeight + ')'
+                    })
+                  bar
+                    .append('rect')
+
+                    .attr('width', x)
+                    .attr('height', barHeight - 1)
+                    .attr('fill', function (d, i) {
+                      return 'cyan'
+                    })
+                  bar
+                    .append('text')
+                    .attr('x', 2)
+                    .attr('y', barHeight / 2)
+                    .attr('dy', '.35em')
+                    .attr('fill', function (d) {
+                      if (d === d3.max(dataset)) {
+                        return 'black'
+                      } else {
+                        return 'black'
+                      }
+                    })
+                    .style('font-size', '12px')
+                    .text(function (d, i) {
+                      switch (i) {
+                        case 0:
+                          return 'Males: ' + d
+                        case 1:
+                          return 'Females: ' + d
+                        case 2:
+                          return 'Children : ' + d
+                        case 3:
+                          return 'Teens : ' + d
+                        case 4:
+                          return 'Adults : ' + d
+                      }
+                    })
+                })
+                .on('mouseout', function (d) {
+                  div.transition().duration(747).style('opacity', 0)
+                })
+                .on('click', clicked)
+
+              let cities = svg
+                .append('g')
+                .attr('class', 'circles')
+                .attr('cursor', 'pointer')
+
+              let features = svg
+                .append('g')
+                .attr('class', 'features')
+                .attr('cursor', 'pointer')
+
+              cities
+                .selectAll('path')
+                .data(data)
+                .enter()
+                .append('circle')
+                .attr('transform', 'translate(0,-100)')
+                .attr('z-index', 10000)
+                .style('z-index', 10000)
+                .style('opacity', 0.6)
+                .attr('cx', function (d) {
+                  return projection([d.lng, d.lat])[0]
+                })
+                .attr('cy', function (d) {
+                  return projection([d.lng, d.lat])[1]
+                })
+                .attr('r', function (d) {
+                  return Math.sqrt(parseInt(d.males + d.females) * 0.02) 
+                })
+                .style('fill', 'blue')
+                .on('mouseover', showTooltipCity)
+                .on('mouseout', hideTooltipCity)
+                .on('click', clickCity)
+            })
+
+            axisScale = d3.scaleLinear().domain(ramp.domain()).range([50, 550])
+            axisBottom = (g) =>
+              g
+                .attr('class', `x-axis`)
+                .attr(
+                  'transform',
+                  'translate(' + window.screen.availWidth / 2.9 + ',770)',
+                )
+                .call(d3.axisBottom(axisScale).ticks(10).tickSize(-10))
+            const linearGradient = svg
+              .append('linearGradient')
+              .attr('id', 'linear-gradient')
+            linearGradient
+              .selectAll('stop')
+              .data(
+                ramp.ticks().map((t, i, n) => ({
+                  offset: `${(100 * i) / n.length}%`,
+                  color: ramp(t),
+                })),
+              )
+              .enter()
+              .append('stop')
+              .attr('offset', (d) => d.offset)
+              .attr('stop-color', (d) => d.color)
+            svg
+              .append('g')
+              .attr(
+                'transform',
+                'translate(' + (window.screen.availWidth / 2.9 + 42) + ',700)',
+              )
+              .append('rect')
+              .attr('transform', 'translate(10,50)')
+              .attr('width', 501)
+              .attr('height', 20)
+              .style('fill', 'url(#linear-gradient)')
+            svg.append('g').call(axisBottom)
+          })
+        })
+      }
+
+      function generateMapCityView() {
+        var ageGroup1Color = '#fff7bc'
+        var ageGroup2Color = '#fec44f'
+        var ageGroup3Color = '#d95f0e'
+        toggle = 2
+        var path = d3.geoPath().projection(projection)
+
+        var path2 = d3.geoPath().projection(projection)
+
+        d3.selectAll('svg').remove()
+        var svg = d3
+          .select('body')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+
+        var viewByAge = document.getElementById('agegroups')
+        var valueAge = viewByAge.options[viewByAge.selectedIndex].value
+        var viewByGender = document.getElementById('gender')
+        var valueGender = viewByGender.options[viewByGender.selectedIndex].value
+
+        d3.csv('/data/city_frequency.csv', function (data) {
+          var dataArray = []
+          var dataArrayUnique = []
+          var citiesUnique = new Set()
+          var maxVal = 0
+          for (var d = 0; d < data.length; d++) {
+            if (
+              (valueAge == -1 ||
+                (valueAge == 1 && data[d].ageGroup <= 1) ||
+                valueAge == data[d].ageGroup) &&
+              (valueGender == -1 || valueGender == data[d].gender)
+            ) {
+              dataArray.push(data[d])
+              if (!citiesUnique.has(data[d].city)) {
+                citiesUnique.add(data[d].city)
+                dataArrayUnique.push(data[d])
+              }
+            }
+          }
+          var groupedData = dataArray.reduce((acc, it) => {
+            acc[it.state] = acc[it.state] + +it.count || +it.count
+            return acc
+          }, {})
+          var groupedDataMale = dataArray
+            .filter((x) => x.gender == 'M')
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataFemale = dataArray
+            .filter((x) => x.gender == 'F')
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup1 = dataArray
+            .filter((x) => x.ageGroup == 1.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup2 = dataArray
+            .filter((x) => x.ageGroup == 2.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup3 = dataArray
+            .filter((x) => x.ageGroup == 3.0)
+            .reduce((acc, it) => {
+              acc[it.state] = acc[it.state] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataCity = dataArray.reduce((acc, it) => {
+            acc[it.city] = acc[it.city] + +it.count || +it.count
+            return acc
+          }, {})
+          var groupedDataMaleCity = dataArray
+            .filter((x) => x.gender == 'M')
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataFemaleCity = dataArray
+            .filter((x) => x.gender == 'F')
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup1City = dataArray
+            .filter((x) => x.ageGroup == 1.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup2City = dataArray
+            .filter((x) => x.ageGroup == 2.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup3City = dataArray
+            .filter((x) => x.ageGroup == 3.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var minVal = 0
+
+          d3.json('/data/us-states.json', function (json) {
+            Object.keys(groupedData).forEach(function (key) {
+              var dataCity = key
+              var dataValue = groupedData[key]
+              maxVal = Math.max(maxVal, dataValue)
+              for (var j = 0; j < json.features.length; j++) {
+                var jsonState = json.features[j].properties.name
+                if (dataCity == jsonState) {
+                  json.features[j].properties.value = dataValue
+                  break
+                }
+              }
+            })
+
+            d3.functor = function functor(v) {
+              return typeof v === 'function'
+                ? v
+                : function () {
+                    return v
+                  }
+            }
+
+            let tip = d3
+              .tip()
+              .attr('class', 'd3-tip')
+              .offset([-40, 0])
+              .html(function (d) {
+                var x = +d.properties.value
+                return
+                ;+"<div id='tipDiv'></div><br>"
+              })
+            svg.call(tip)
+
+            let ramp = d3
+              .scaleSequential(d3.interpolateYlOrBr)
+              .domain([minVal, maxVal])
+
+            let div = d3
+              .select('body')
+              .append('div')
+              .attr('class', 'tooltip')
+              .style('opacity', 0)
+            svg
+              .selectAll('path')
+              .data(json.features)
+              .enter()
+              .append('path')
+              .attr('d', path)
+              .attr('transform', 'translate(0,-100)')
+              .style('stroke', 'black')
+              .style('stroke-width', '1')
+              .style('fill', function (d) {
+                return ramp(
+                  d.properties.value === undefined ? 0 : d.properties.value,
+                )
+              })
+              .on('mouseover', function (d) {
+                let id = d
+
+                d3.selectAll('#tipDiv').remove()
+                val = d.properties.value
+                if (!val) {
+                  val = 0
+                }
+                div.transition().duration(200).style('opacity', 0.9)
+                div
+                  .html('Total deaths in ' + d.properties.name + ' : ' + val)
+                  .style('left', d3.event.pageX + 'px')
+                  .style('top', d3.event.pageY - 28 + 'px')
+                tip.show(d)
+                var state = d.properties.name
+                var dataset = [
+                  groupedDataMale[state] || 0,
+                  groupedDataFemale[state] || 0,
+                  groupedDataAgeGroup1[state] || 0,
+                  groupedDataAgeGroup2[state] || 0,
+                  groupedDataAgeGroup3[state] || 0,
+                ]
+                var barHeight = 25
+                var tipSVG = div
+                  .append('svg')
+                  .attr('width', 150)
+                  .attr('height', barHeight * 5)
+                var x = d3
+                  .scaleLinear()
+                  .domain([0, d3.max(dataset)])
+                  .range([0, 150])
+                var bar = tipSVG
+                  .selectAll('g')
+                  .data(dataset)
+                  .enter()
+                  .append('g')
+                  .attr('transform', function (d, i) {
+                    return 'translate(0,' + i * barHeight + ')'
+                  })
+                bar
+                  .append('rect')
+                  .attr('width', 50)
+                  .transition()
+                  .duration(1000)
+                  .attr('width', x)
+                  .attr('height', barHeight - 1)
+                  .attr('fill', function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return maleColor
+                      case 1:
+                        return femaleColor
+                      case 2:
+                        return ageGroup1Color
+                      case 3:
+                        return ageGroup2Color
+                      case 4:
+                        return ageGroup3Color
+                    }
+                  })
+                bar
+                  .append('text')
+                  .attr('x', 2)
+                  .attr('y', barHeight / 2)
+                  .attr('dy', '.35em')
+                  .attr('fill', function (d) {
+                    return 'black'
+                  })
+                  .style('font-size', '12px')
+                  .text(function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return 'Males: ' + d
+                      case 1:
+                        return 'Females: ' + d
+                      case 2:
+                        return 'Age Group 1: ' + d
+                      case 3:
+                        return 'Age Group 2: ' + d
+                      case 4:
+                        return 'Age Group 3: ' + d
+                    }
+                  })
+              })
+              .on('mouseout', function (d) {
+                div.transition().duration(500).style('opacity', 0)
+              })
+            axisScale = d3.scaleLinear().domain(ramp.domain()).range([50, 550])
+            axisBottom = (g) =>
+              g
+                .attr('class', `x-axis`)
+                .attr('transform', 'translate(10,1270)')
+                .call(d3.axisBottom(axisScale).ticks(10).tickSize(-10))
+            const linearGradient = svg
+              .append('linearGradient')
+              .attr('id', 'linear-gradient')
+            linearGradient
+              .selectAll('stop')
+              .data(
+                ramp.ticks().map((t, i, n) => ({
+                  offset: `${(100 * i) / n.length}%`,
+                  color: ramp(t),
+                })),
+              )
+              .enter()
+              .append('stop')
+              .attr('offset', (d) => d.offset)
+              .attr('stop-color', (d) => d.color)
+            svg
+              .append('g')
+              .attr('transform', 'translate(50,500)')
+              .append('rect')
+              .attr('transform', 'translate(10,50)')
+              .attr('width', 501)
+              .attr('height', 20)
+              .style('fill', 'url(#linear-gradient)')
+            svg.append('g').call(axisBottom)
+          })
+          var tip = d3
+            .tip()
+            .attr('class', 'd3-tip')
+            .offset([-40, 0])
+            .html(function (d) {
+              var x = +d.count
+              return
+              ;+"<div id='tipDiv'></div><br>"
+            })
+          svg.call(tip)
+          var max_radius = 30
+          var div = d3
+            .select('body')
+            .append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0)
+          setTimeout(() => {
+            svg
+              .selectAll('circle')
+              .data(dataArrayUnique)
+              .enter()
+              .append('circle')
+              .attr('cx', function (d) {
+                return projection([d.lng, d.lat])[0]
+              })
+              .attr('cy', function (d) {
+                return projection([d.lng, d.lat])[1]
+              })
+              .attr('r', function (d) {
+                return max_radius * Math.sqrt(groupedDataCity[d.city] / maxVal)
+              })
+              .attr('transform', 'translate(0,-100)')
+              .style('stroke', 'blue')
+              .style('stroke-width', 1)
+              .style('opacity', 0.5)
+              .style('fill', 'blue')
+              .on('mouseover', function (d) {
+                d3.selectAll('#tipDiv').remove()
+                val = d.count
+                if (!val) {
+                  val = 0
+                }
+                div.transition().duration(200).style('opacity', 0.9)
+                if (!groupedDataAgeGroup1[d.city]) {
+                  var agegroup1 = 0
+                } else {
+                  var agegroup1 = groupedDataAgeGroup1[d.city]
+                }
+                if (!groupedDataAgeGroup2[d.city]) {
+                  var agegroup2 = 0
+                } else {
+                  var agegroup2 = groupedDataAgeGroup2[d.city]
+                }
+                if (!groupedDataAgeGroup3[d.city]) {
+                  var agegroup3 = 0
+                } else {
+                  var agegroup3 = groupedDataAgeGroup3[d.city]
+                }
+                div
+                  .html('Total deaths in ' + d.city + 'are: ' + d.count)
+                  .style('left', d3.event.pageX + 'px')
+                  .style('top', d3.event.pageY - 28 + 'px')
+                tip.show(d)
+                var city = d.city
+                var dataset = [
+                  groupedDataMaleCity[city] || 0,
+                  groupedDataFemaleCity[city] || 0,
+                  groupedDataAgeGroup1City[city] || 0,
+                  groupedDataAgeGroup2City[city] || 0,
+                  groupedDataAgeGroup3City[city] || 0,
+                ]
+                var barHeight = 25
+                var tipSVG = div
+                  .append('svg')
+                  .attr('width', 150)
+                  .attr('height', barHeight * 5)
+                var x = d3
+                  .scaleLinear()
+                  .domain([0, d3.max(dataset)])
+                  .range([0, 150])
+                var bar = tipSVG
+                  .selectAll('g')
+                  .data(dataset)
+                  .enter()
+                  .append('g')
+                  .attr('transform', function (d, i) {
+                    return 'translate(0,' + i * barHeight + ')'
+                  })
+                bar
+                  .append('rect')
+                  .attr('width', 40)
+                  .transition()
+                  .duration(1000)
+                  .attr('width', x)
+                  .attr('height', barHeight - 1)
+                  .attr('fill', function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return maleColor
+                      case 1:
+                        return femaleColor
+                      case 2:
+                        return ageGroup1Color
+                      case 3:
+                        return ageGroup2Color
+                      case 4:
+                        return ageGroup3Color
+                    }
+                  })
+                bar
+                  .append('text')
+                  .attr('x', 2)
+                  .attr('y', barHeight / 2)
+                  .attr('dy', '.35em')
+                  .attr('fill', function (d) {
+                    if (d === d3.max(dataset)) {
+                      return 'black'
+                    } else {
+                      return 'black'
+                    }
+                  })
+                  .style('font-size', '12px')
+                  .text(function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return 'Males: ' + d
+                      case 1:
+                        return 'Females: ' + d
+                      case 2:
+                        return 'Age Group 1: ' + d
+                      case 3:
+                        return 'Age Group 2: ' + d
+                      case 4:
+                        return 'Age Group 3: ' + d
+                    }
+                  })
+              })
+              .on('mouseout', function (d) {
+                div.transition().duration(500).style('opacity', 0)
+              })
+          }, 15)
+        })
+      }
+
+      function generateMapCities() {
+        toggle = 1
+        var path = d3.geoPath()
+        city_data = '/data/city_frequency.csv'
+        d3.selectAll('svg').remove()
+        var svg = d3
+          .select('body')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+        var viewByAge = document.getElementById('agegroups')
+        var valueAge = viewByAge.options[viewByAge.selectedIndex].value
+        var viewByGender = document.getElementById('gender')
+        var valueGender = viewByGender.options[viewByGender.selectedIndex].value
+
+        d3.csv(city_data, function (data) {
+          var dataArray = []
+          var maxVal = 0
+          for (var d = 0; d < data.length; d++) {
+            if (
+              (valueAge == -1 ||
+                (valueAge == 1 && data[d].ageGroup <= 1) ||
+                valueAge == data[d].ageGroup) &&
+              (valueGender == -1 || valueGender == data[d].gender)
+            ) {
+              dataArray.push(data[d])
+            }
+          }
+          var groupedData = dataArray.reduce((acc, it) => {
+            acc[it.city] = acc[it.city] + +it.count || +it.count
+            return acc
+          }, {})
+          var groupedDataMale = dataArray
+            .filter((x) => x.gender == 'M')
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataFemale = dataArray
+            .filter((x) => x.gender == 'F')
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup1 = dataArray
+            .filter((x) => x.ageGroup == 1.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup2 = dataArray
+            .filter((x) => x.ageGroup == 2.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+          var groupedDataAgeGroup3 = dataArray
+            .filter((x) => x.ageGroup == 3.0)
+            .reduce((acc, it) => {
+              acc[it.city] = acc[it.city] + +it.count || +it.count
+              return acc
+            }, {})
+
+          var minVal = 0
+
+          d3.json('/data/counties-albers.json', function (json) {
+            Object.keys(groupedData).forEach(function (key) {
+              var dataCity = key
+              var dataValue = groupedData[key]
+              maxVal = Math.max(maxVal, dataValue)
+              for (
+                var j = 0;
+                j < json.objects.counties.geometries.length;
+                j++
+              ) {
+                var jsonCity =
+                  json.objects.counties.geometries[j].properties.name
+                if (dataCity == jsonCity) {
+                  json.objects.counties.geometries[
+                    j
+                  ].properties.value = dataValue
+                  break
+                }
+              }
+            })
+            d3.functor = function functor(v) {
+              return typeof v === 'function'
+                ? v
+                : function () {
+                    return v
+                  }
+            }
+            var tip = d3
+              .tip()
+              .attr('class', 'd3-tip')
+              .offset([-40, 0])
+              .html(function (d) {
+                var x = +d.properties.value
+                return
+                ;+"<div id='tipDiv'></div><br>"
+              })
+            svg.call(tip)
+            var ramp = d3
+              .scaleSequential(d3.interpolatePuRd)
+              .domain([minVal, maxVal])
+            var div = d3
+              .select('body')
+              .append('div')
+              .attr('class', 'tooltip')
+              .style('opacity', 0)
+
+            svg
+              .selectAll('path')
+              .data(topojson.feature(json, json.objects.counties).features)
+              .enter()
+              .append('path')
+              .attr('d', path)
+              .style('stroke', 'grey')
+              .style('stroke-width', '1')
+              .style('fill', function (d) {
+                return ramp(
+                  d.properties.value === undefined ? 0 : d.properties.value,
+                )
+              })
+              .on('mouseover', function (d) {
+                d3.selectAll('#tipDiv').remove()
+                val = d.properties.value
+                if (!val) {
+                  val = 0
+                }
+                div.transition().duration(200).style('opacity', 0.9)
+                if (!groupedDataAgeGroup1[d.properties.name]) {
+                  var agegroup1 = 0
+                } else {
+                  var agegroup1 = groupedDataAgeGroup1[d.properties.name]
+                }
+                if (!groupedDataAgeGroup2[d.properties.name]) {
+                  var agegroup2 = 0
+                } else {
+                  var agegroup2 = groupedDataAgeGroup2[d.properties.name]
+                }
+                if (!groupedDataAgeGroup3[d.properties.name]) {
+                  var agegroup3 = 0
+                } else {
+                  var agegroup3 = groupedDataAgeGroup3[d.properties.name]
+                }
+                div
+                  .html('Total deaths in ' + d.properties.name + ' are: ' + val)
+                  .style('left', d3.event.pageX + 'px')
+                  .style('top', d3.event.pageY - 28 + 'px')
+                tip.show(d)
+                var city = d.properties.name
+                var dataset = [
+                  groupedDataMale[city] || 0,
+                  groupedDataFemale[city] || 0,
+                  groupedDataAgeGroup1[city] || 0,
+                  groupedDataAgeGroup2[city] || 0,
+                  groupedDataAgeGroup3[city] || 0,
+                ]
+                var barHeight = 25
+                var tipSVG = div
+                  .append('svg')
+                  .attr('width', 150)
+                  .attr('height', barHeight * 5)
+                var x = d3
+                  .scaleLinear()
+                  .domain([0, d3.max(dataset)])
+                  .range([0, 150])
+                var bar = tipSVG
+                  .selectAll('g')
+                  .data(dataset)
+                  .enter()
+                  .append('g')
+                  .attr('transform', function (d, i) {
+                    return 'translate(0,' + i * barHeight + ')'
+                  })
+                bar
+                  .append('rect')
+                  .attr('width', 50)
+                  .transition()
+                  .duration(1000)
+                  .attr('width', x)
+                  .attr('height', barHeight - 1)
+                  .attr('fill', function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return maleColor
+                      case 1:
+                        return femaleColor
+                      case 2:
+                        return ageGroup1Color
+                      case 3:
+                        return ageGroup2Color
+                      case 4:
+                        return ageGroup3Color
+                    }
+                  })
+                bar
+                  .append('text')
+                  .attr('x', 2)
+                  .attr('y', barHeight / 2)
+                  .attr('dy', '.35em')
+                  .attr('fill', function (d) {
+                    if (d === d3.max(dataset)) {
+                      return 'black'
+                    } else {
+                      return 'black'
+                    }
+                  })
+                  .style('font-size', '12px')
+                  .text(function (d, i) {
+                    switch (i) {
+                      case 0:
+                        return 'Males: ' + d
+                      case 1:
+                        return 'Females: ' + d
+                      case 2:
+                        return 'Age Group 1: ' + d
+                      case 3:
+                        return 'Age Group 2: ' + d
+                      case 4:
+                        return 'Age Group 3: ' + d
+                    }
+                  })
+              })
+              .on('mouseout', function (d) {
+                div.transition().duration(500).style('opacity', 0)
+              })
+            svg
+              .append('path')
+              .datum(
+                topojson.mesh(json, json.objects.states, (a, b) => a !== b),
+              )
+              .attr('fill', 'none')
+              .attr('stroke', 'black')
+              .attr('stroke-linejoin', 'round')
+              .attr('d', path)
+            axisScale = d3.scaleLinear().domain(ramp.domain()).range([50, 550])
+            axisBottom = (g) =>
+              g
+                .attr('class', `x-axis`)
+                .attr('transform', 'translate(10,670)')
+                .call(d3.axisBottom(axisScale).ticks(10).tickSize(-10))
+            const linearGradient = svg
+              .append('linearGradient')
+              .attr('id', 'linear-gradient')
+            linearGradient
+              .selectAll('stop')
+              .data(
+                ramp.ticks().map((t, i, n) => ({
+                  offset: `${(100 * i) / n.length}%`,
+                  color: ramp(t),
+                })),
+              )
+              .enter()
+              .append('stop')
+              .attr('offset', (d) => d.offset)
+              .attr('stop-color', (d) => d.color)
+            svg.append('text').text('Number')
+            svg
+              .append('g')
+              .attr('transform', 'translate(50,600)')
+              .append('rect')
+              .attr('transform', 'translate(10,50)')
+              .attr('width', 501)
+              .attr('height', 20)
+              .style('fill', 'url(#linear-gradient)')
+            svg.append('g').call(axisBottom)
+          })
+        })
+      }
+
+      function generateMap() {
+        generateMapStates()
+      }
+      generateMap()
+
+      function onClick(element) {
+        document.getElementById('img01').src = element.src
+        document.getElementById('modal01').style.display = 'block'
+        var captionText = document.getElementById('caption')
+        captionText.innerHTML = element.alt
+      }
+
+      document.getElementById('black_hat').onclick = function () {
+        location.href = 'black_hat.html'
+      }
+
+      document.getElementById('detail_view').onclick = function () {
+        location.href = 'detailview.html'
+      }
+    </script>
+
+  </body>
+
+  <p style = "padding-left : 200px ; padding-right :  200px ">
+    For the overall gun related deaths in the US, I implemented a choropleth map that shows the number of deaths in each state normalized by the population of that state. This gives us an accurate version of events as no misrepresentation occurs due to absolute values. 
+    The number of deaths in each city is displayed in the form of  bubbles, where the larger the size of the bubble, the more the number of deaths and vice-versa. This makes it easy to identify cities where a large number of murders have taken place. This integration of map types allows users to more efficiently grasp data both at the state and city level.
+     Hovering above a city or state gives further information regarding number of deaths per gender and per age group in the form of a bar graph. Additionally, users also have the option of interacting with the visualization through filtering the data by both age group and gender. This granular level of control gives users more insights into the data, allowing for more accurate inferences.  
+    The color scheme used for the choropleth was taken from colorbrewer, and is color blind friendly. The color scheme used is sequential in nature. The lighter the color, the less the number of deaths and vice-versa. The labels and titles are appropriately marked for easy understanding of values and ranges.
+    </p>
+</html>

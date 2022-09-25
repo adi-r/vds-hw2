@@ -1,0 +1,243 @@
+state,gender,ageGroup,count
+Alaska,F,1.0,2
+Alaska,F,3.0,6
+Alaska,M,1.0,1
+Alaska,M,2.0,1
+Alaska,M,3.0,23
+Alabama,F,1.0,1
+Alabama,F,2.0,1
+Alabama,F,3.0,37
+Alabama,M,1.0,4
+Alabama,M,2.0,11
+Alabama,M,3.0,205
+Arkansas,F,1.0,3
+Arkansas,F,2.0,1
+Arkansas,F,3.0,19
+Arkansas,M,1.0,4
+Arkansas,M,2.0,6
+Arkansas,M,3.0,100
+Arizona,F,1.0,1
+Arizona,F,2.0,3
+Arizona,F,3.0,36
+Arizona,M,1.0,3
+Arizona,M,2.0,11
+Arizona,M,3.0,191
+California,F,1.0,8
+California,F,2.0,9
+California,F,3.0,143
+California,M,1.0,5
+California,M,2.0,71
+California,M,3.0,1200
+Colorado,F,1.0,2
+Colorado,F,2.0,1
+Colorado,F,3.0,35
+Colorado,M,1.0,3
+Colorado,M,2.0,6
+Colorado,M,3.0,95
+Connecticut,F,1.0,12
+Connecticut,F,3.0,15
+Connecticut,M,1.0,10
+Connecticut,M,2.0,1
+Connecticut,M,3.0,69
+District of Columbia,F,3.0,8
+District of Columbia,M,2.0,2
+District of Columbia,M,3.0,94
+Delaware,F,3.0,8
+Delaware,M,2.0,4
+Delaware,M,3.0,29
+Florida,F,1.0,5
+Florida,F,2.0,8
+Florida,F,3.0,121
+Florida,M,1.0,12
+Florida,M,2.0,23
+Florida,M,3.0,583
+Florida,M,3.0,1
+Georgia,F,2.0,2
+Georgia,F,3.0,66
+Georgia,M,1.0,5
+Georgia,M,2.0,18
+Georgia,M,3.0,282
+Hawaii,F,3.0,6
+Hawaii,M,3.0,7
+Iowa,F,3.0,9
+Iowa,M,1.0,1
+Iowa,M,3.0,45
+Idaho,F,3.0,5
+Idaho,M,1.0,1
+Idaho,M,2.0,1
+Idaho,M,3.0,21
+Illinois,F,1.0,2
+Illinois,F,2.0,5
+Illinois,F,3.0,56
+Illinois,M,1.0,5
+Illinois,M,2.0,55
+Illinois,M,3.0,489
+Indiana,F,2.0,1
+Indiana,F,3.0,41
+Indiana,M,1.0,4
+Indiana,M,2.0,12
+Indiana,M,3.0,275
+Kansas,F,1.0,2
+Kansas,F,3.0,19
+Kansas,M,0.0,2
+Kansas,M,1.0,2
+Kansas,M,2.0,4
+Kansas,M,3.0,80
+Kentucky,F,1.0,4
+Kentucky,F,3.0,35
+Kentucky,M,1.0,1
+Kentucky,M,2.0,6
+Kentucky,M,3.0,130
+Louisiana,F,1.0,3
+Louisiana,F,3.0,48
+Louisiana,M,1.0,2
+Louisiana,M,2.0,21
+Louisiana,M,3.0,336
+Massachusetts,F,3.0,11
+Massachusetts,M,3.0,84
+Maryland,F,1.0,1
+Maryland,F,2.0,2
+Maryland,F,3.0,30
+Maryland,M,1.0,2
+Maryland,M,2.0,6
+Maryland,M,3.0,287
+Maine,F,3.0,5
+Maine,M,3.0,21
+Michigan,F,1.0,2
+Michigan,F,2.0,3
+Michigan,F,3.0,72
+Michigan,M,1.0,7
+Michigan,M,2.0,26
+Michigan,M,3.0,359
+Minnesota,F,3.0,14
+Minnesota,M,1.0,1
+Minnesota,M,3.0,88
+Missouri,F,1.0,3
+Missouri,F,2.0,1
+Missouri,F,3.0,54
+Missouri,M,1.0,5
+Missouri,M,2.0,16
+Missouri,M,3.0,267
+Mississippi,F,1.0,1
+Mississippi,F,2.0,2
+Mississippi,F,3.0,25
+Mississippi,M,1.0,4
+Mississippi,M,2.0,5
+Mississippi,M,3.0,98
+Montana,F,3.0,1
+Montana,M,3.0,31
+North Carolina,F,1.0,1
+North Carolina,F,2.0,2
+North Carolina,F,3.0,72
+North Carolina,M,1.0,4
+North Carolina,M,2.0,24
+North Carolina,M,3.0,323
+North Dakota,F,3.0,1
+North Dakota,M,3.0,6
+Nebraska,F,3.0,6
+Nebraska,M,1.0,1
+Nebraska,M,2.0,1
+Nebraska,M,3.0,46
+New Hampshire,F,3.0,1
+New Hampshire,M,1.0,1
+New Hampshire,M,2.0,1
+New Hampshire,M,3.0,10
+New Jersey,F,2.0,4
+New Jersey,F,3.0,21
+New Jersey,M,1.0,2
+New Jersey,M,2.0,8
+New Jersey,M,3.0,239
+New Mexico,F,1.0,3
+New Mexico,F,3.0,16
+New Mexico,M,1.0,2
+New Mexico,M,2.0,4
+New Mexico,M,3.0,62
+Nevada,F,2.0,2
+Nevada,F,3.0,19
+Nevada,M,1.0,3
+Nevada,M,2.0,6
+Nevada,M,3.0,88
+New York,F,2.0,1
+New York,F,3.0,47
+New York,M,1.0,3
+New York,M,2.0,14
+New York,M,3.0,310
+Ohio,F,1.0,2
+Ohio,F,2.0,3
+Ohio,F,3.0,67
+Ohio,M,1.0,10
+Ohio,M,2.0,24
+Ohio,M,3.0,385
+Oklahoma,F,2.0,2
+Oklahoma,F,3.0,33
+Oklahoma,M,1.0,2
+Oklahoma,M,2.0,8
+Oklahoma,M,3.0,135
+Oregon,F,1.0,3
+Oregon,F,2.0,1
+Oregon,F,3.0,15
+Oregon,M,1.0,1
+Oregon,M,2.0,2
+Oregon,M,3.0,61
+Pennsylvania,F,1.0,2
+Pennsylvania,F,2.0,1
+Pennsylvania,F,3.0,74
+Pennsylvania,M,1.0,6
+Pennsylvania,M,2.0,18
+Pennsylvania,M,3.0,463
+Rhode Island,F,1.0,1
+Rhode Island,F,3.0,5
+Rhode Island,M,2.0,1
+Rhode Island,M,3.0,18
+South Carolina,F,1.0,3
+South Carolina,F,3.0,56
+South Carolina,M,1.0,7
+South Carolina,M,2.0,4
+South Carolina,M,3.0,163
+South Dakota,F,3.0,1
+South Dakota,M,2.0,1
+South Dakota,M,3.0,15
+Tennessee,F,1.0,4
+Tennessee,F,3.0,41
+Tennessee,M,1.0,8
+Tennessee,M,2.0,19
+Tennessee,M,3.0,195
+Texas,F,1.0,2
+Texas,F,2.0,9
+Texas,F,3.0,162
+Texas,M,1.0,17
+Texas,M,2.0,35
+Texas,M,3.0,734
+Utah,F,2.0,1
+Utah,F,3.0,12
+Utah,M,1.0,2
+Utah,M,2.0,1
+Utah,M,3.0,37
+Virginia,F,1.0,1
+Virginia,F,3.0,44
+Virginia,M,1.0,2
+Virginia,M,2.0,12
+Virginia,M,3.0,213
+Vermont,F,3.0,4
+Vermont,M,2.0,1
+Vermont,M,3.0,9
+Washington,F,2.0,1
+Washington,F,3.0,16
+Washington,M,1.0,1
+Washington,M,2.0,5
+Washington,M,3.0,115
+Wisconsin,F,1.0,1
+Wisconsin,F,2.0,1
+Wisconsin,F,3.0,26
+Wisconsin,M,2.0,8
+Wisconsin,M,3.0,129
+West Virginia,F,1.0,1
+West Virginia,F,2.0,2
+West Virginia,F,3.0,6
+West Virginia,M,1.0,1
+West Virginia,M,3.0,53
+Wyoming,F,1.0,1
+Wyoming,F,3.0,5
+Wyoming,M,3.0,10
+Ohio,F,3.0,1
+Virginia,M,3.0,1
