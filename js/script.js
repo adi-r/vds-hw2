@@ -269,29 +269,29 @@ let state_map = function () {
                           .attr('cursor', 'pointer')
           
 
-        cities
-          .selectAll('path')
-          .data(data)
-          .enter()
-          .append('circle')
-          .attr('transform', 'translate(0,-100)')
-          .style('z-index', 10000)
-          .style('opacity', 0.75)
-          .attr('cx', function (d) {
-            return projection([d.lng, d.lat])[0]
-          })
-          .attr('cy', function (d) {
-            return projection([d.lng, d.lat])[1]
-          })
-          .attr('r', function (d) {
-            return Math.sqrt((d.males + d.females) * 0.02) 
-          })
-          .style('fill', 'black')
-          .on('mouseover', show_tool)
-          .on('mouseout', hide_tool)
+        cities.selectAll('path')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('transform', 'translate(0,-100)')
+            .style('z-index', 10000)
+            .style('opacity', 0.75)
+            .attr('cx', function (d) {
+              return projection([d.lng, d.lat])[0]
+            })
+            .attr('cy', function (d) {
+              return projection([d.lng, d.lat])[1]
+            })
+            .attr('r', function (d) {
+              return Math.sqrt((d.males + d.females) * 0.06) 
+            })
+            .style('fill', 'black')
+            .on('mouseover', show_tool)
+            .on('mouseout', hide_tool)
+          
       })
 
-      axisScale = d3.scaleLinear().domain(color_range.domain()).range([50, 550])
+      scale_axis = d3.scaleLinear().domain(color_range.domain()).range([50, 550])
       axisBottom = (g) =>
         g
           .attr('class', `x-axis`)
@@ -299,7 +299,7 @@ let state_map = function () {
             'transform',
             'translate(' + window.screen.availWidth / 3 + ',' +(height -50) +')',
           )
-          .call(d3.axisBottom(axisScale).ticks(10).tickSize(-10))
+          .call(d3.axisBottom(scale_axis).ticks(10).tickSize(-10))
       const linearGradient = svg
         .append('linearGradient')
         .attr('id', 'linear-gradient')

@@ -1,10 +1,10 @@
 body,
 html {
+    text-align: justify;
     height: 100%;
+    line-height: 1.8;
     background-color: #F2F3F4;
     color: black;
-    line-height: 1.8;
-    text-align: justify;
 }
 
 .float-container {
@@ -12,9 +12,10 @@ html {
 }
 
 .float-child {
+    padding: 5px;
+    padding-bottom: 10px;
     width: 50%;
     float: left;
-    padding: 7px;
 }
 
 .w3-wide {
@@ -42,17 +43,13 @@ html {
 }
 
 .tooltip {
-    position: absolute;
     text-align: center;
-    width: 300px;
+    width: 250px;
     height: 150px;
     padding: 2px;
-    font: 12px sans-serif;
-    background: #F2F3F4;
+    position: absolute;
     border: 1px;
-    border-radius: 8px;
-    pointer-events: none;
-    box-shadow: 2px;
+    background: #F2F3F4;
 }
 
 .collapsible {
