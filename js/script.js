@@ -36,7 +36,7 @@ function show_tool(d) {
           .style('padding', '2px')
           .style('top',  (d3.select(this).attr("cy") + tooltip_offset.y) + 'px')
           .style('left', (d3.select(this).attr("cx") + tooltip_offset.x)  + 'px')
-          .html('Death count in ' + d.city + '<br/> Kids:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + ((d.males + d.females) - d.kids - d.teens)  
+          .html('Death count in ' + d.city + '<br/> Kids:' + d.kids + ' <br/> Teens:' + d.teens + ' <br/> Adults:' + (parseInt(d.males) + parseInt(d.females) - parseInt(d.kids) - parseInt(d.teens))  
           + ' <br/>  Males: ' + d.males + ' <br/> Females: ' + d.females,
                 )    
 }
