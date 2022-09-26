@@ -242,17 +242,18 @@ let state_map = function () {
                 })
                 .style('font-size', '12px')
                 .text(function (d, i) {
-                  switch (i) {
-                    case 0:
-                      return 'Males: ' + d
-                    case 1:
-                      return 'Females: ' + d
-                    case 2:
-                      return 'Kids : ' + d
-                    case 3:
-                      return 'Teens : ' + d
-                    case 4:
-                      return 'Adults : ' + d
+                  if(i === 0) {
+                    return 'Males: ' + d
+                  } else if(i === 1) {
+                    return 'Females: ' + d
+                  } else if(i === 2) {
+                    return 'Kids : ' + d
+                  } else if(i === 3) {
+                    return 'Teens : ' + d
+                  } else if(i === 4) {
+                    return 'Adults : ' + d
+                  } else {
+                    console.log('invalid value')
                   }
                 })
           })
