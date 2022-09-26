@@ -170,7 +170,7 @@ let state_map = function () {
                   .style('opacity', 0.9)
 
       d3.csv('./data/city_freq.csv', function (data) {
-        
+        json.features[52] = {properties: {name: "Alabama", density: 94.65, value: 258}}
         svg.selectAll('path')
             .data(json.features)
             .enter()
@@ -181,7 +181,7 @@ let state_map = function () {
             .style('stroke', 'black')
             .style('z-index', 1)
             .style('fill', function (d) {
-            console.log('d', json.features);
+              console.log('dd', d.properties)
             return color_range(
               d.properties.value === undefined ? 259 : d.properties.value,
             )
@@ -196,7 +196,6 @@ let state_map = function () {
             div.transition()
                 .duration(300)
                 .style('opacity', 0.9)
-                console.log('d', d.properties)
             div.html(d.properties.name + "'s number of deaths:" + val + '<br/>Death rate% per 100k population: ' + ((val/100000.0) * 100).toFixed(3) + '%',)
                 .style('top', d3.event.pageY - 50 + 'px')
                 .style('left', d3.event.pageX - 5 + 'px')
